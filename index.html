@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noman Wholesaler · Order Management</title>
-    <!-- Font Awesome -->
+    <title>Noman Wholesaler · Admin & Customer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -34,6 +33,8 @@
             justify-content: space-between;
             flex-wrap: wrap;
             margin-bottom: 0.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #eae3da;
         }
         .brand-title {
             display: flex;
@@ -67,6 +68,31 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+        }
+        .user-switch {
+            display: flex;
+            gap: 0.5rem;
+            background: #f5efe8;
+            padding: 0.3rem;
+            border-radius: 60px;
+        }
+        .user-switch button {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            background: transparent;
+            color: #5a4a3a;
+        }
+        .user-switch button.active {
+            background: #b45309;
+            color: white;
+        }
+        .user-switch button:hover:not(.active) {
+            background: #eae3da;
         }
         .subhead {
             color: #3d4e66;
@@ -141,7 +167,8 @@
             letter-spacing: 0.04em;
             color: #5a4a3a;
         }
-        .form-group input, .form-group select {
+        .form-group input,
+        .form-group select {
             background: white;
             border: 1px solid #d6cdc2;
             border-radius: 60px;
@@ -150,7 +177,8 @@
             transition: 0.2s;
             width: 100%;
         }
-        .form-group input:focus, .form-group select:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #b45309;
             box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.15);
@@ -176,24 +204,6 @@
             background: #92400e;
             transform: scale(0.97);
             box-shadow: 0 8px 18px rgba(180, 83, 9, 0.25);
-        }
-        .btn-secondary {
-            background: transparent;
-            border: 1px solid #d6cdc2;
-            color: #5a4a3a;
-            padding: 0.6rem 1.5rem;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.15s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-secondary:hover {
-            background: #f5efe8;
-            border-color: #b45309;
         }
         .btn-danger {
             background: transparent;
@@ -244,20 +254,6 @@
         }
         .btn-success:hover {
             background: #15803d;
-        }
-        .btn-warning {
-            background: #f59e0b;
-            border: none;
-            color: white;
-            padding: 0.3rem 1rem;
-            border-radius: 40px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .btn-warning:hover {
-            background: #d97706;
         }
         /* --- Product Grid --- */
         .product-grid {
@@ -397,11 +393,26 @@
             font-weight: 600;
             display: inline-block;
         }
-        .status-pending { background: #fef3c7; color: #78350f; }
-        .status-processing { background: #dbeafe; color: #1e40af; }
-        .status-shipped { background: #d1fae5; color: #065f46; }
-        .status-delivered { background: #d1fae5; color: #065f46; }
-        .status-cancelled { background: #fee2e2; color: #991b1b; }
+        .status-pending {
+            background: #fef3c7;
+            color: #78350f;
+        }
+        .status-processing {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .status-shipped {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status-delivered {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
         .empty-state {
             text-align: center;
             padding: 2.5rem 0;
@@ -452,552 +463,768 @@
             text-transform: uppercase;
             font-weight: 600;
         }
+        /* Customer Orders */
+        .customer-order-card {
+            background: #faf8f5;
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            border: 1px solid #eae3da;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .customer-order-card .order-info {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .customer-order-card .order-info span {
+            font-size: 0.9rem;
+        }
+        .customer-order-card .order-info strong {
+            color: #1a2a3a;
+        }
+        .customer-login {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #faf8f5;
+            border-radius: 24px;
+            border: 1px solid #eae3da;
+        }
+        .customer-login h3 {
+            margin-bottom: 1.5rem;
+            color: #1a2a3a;
+        }
+        .customer-login .form-group {
+            margin-bottom: 1rem;
+        }
         @media (max-width: 600px) {
-            .app-container { padding: 1.2rem; }
-            .product-form { flex-direction: column; align-items: stretch; }
-            .brand-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-            .tabs { gap: 0.3rem; }
-            .tab-btn { padding: 0.4rem 1rem; font-size: 0.8rem; }
+            .app-container {
+                padding: 1.2rem;
+            }
+            .product-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .brand-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            .tabs {
+                gap: 0.3rem;
+            }
+            .tab-btn {
+                padding: 0.4rem 1rem;
+                font-size: 0.8rem;
+            }
+            .user-switch button {
+                padding: 0.3rem 1rem;
+                font-size: 0.75rem;
+            }
         }
     </style>
 </head>
 <body>
-<div class="app-container" id="app">
-    <!-- Brand Header -->
-    <div class="brand-header">
-        <div class="brand-title">
-            <i class="fas fa-warehouse"></i>
-            <h1>Noman <span>Wholesaler</span></h1>
+    <div class="app-container" id="app">
+        <!-- Brand Header -->
+        <div class="brand-header">
+            <div class="brand-title">
+                <i class="fas fa-warehouse"></i>
+                <h1>Noman <span>Wholesaler</span></h1>
+            </div>
+            <div class="inline-flex" style="gap: 10px;">
+                <span class="badge-wholesale"><i class="fas fa-tags"></i> B2B</span>
+                <span class="wholesale-stamp"><i class="fas fa-percent"></i> Bulk pricing</span>
+                <div class="user-switch">
+                    <button class="active" id="adminBtn"><i class="fas fa-user-cog"></i> Admin</button>
+                    <button id="customerBtn"><i class="fas fa-user"></i> Customer</button>
+                </div>
+            </div>
         </div>
-        <div class="inline-flex" style="gap: 10px;">
-            <span class="badge-wholesale"><i class="fas fa-tags"></i> B2B</span>
-            <span class="wholesale-stamp"><i class="fas fa-percent"></i> Bulk pricing</span>
+
+        <div class="subhead" id="pageTitle">
+            <i class="fas fa-boxes" style="margin-right: 8px; color:#b45309;"></i>
+            Admin Panel · Manage products & orders
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="products"><i class="fas fa-box"></i> Products</button>
+                <button class="tab-btn" data-tab="orders"><i class="fas fa-shopping-cart"></i> Orders</button>
+                <button class="tab-btn" data-tab="customers"><i class="fas fa-users"></i> Customers</button>
+            </div>
+
+            <!-- Tab: Products -->
+            <div class="tab-content active" id="tab-products">
+                <div class="product-form">
+                    <div class="form-group" style="flex: 1.5;">
+                        <label for="productName"><i class="fas fa-tag"></i> Name</label>
+                        <input type="text" id="productName" placeholder="Product name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice"><i class="fas fa-rupee-sign"></i> Price (Rs.)</label>
+                        <input type="number" id="productPrice" placeholder="1250" step="1" />
+                    </div>
+                    <div class="form-group" style="flex: 2;">
+                        <label for="productDesc"><i class="fas fa-align-left"></i> Description</label>
+                        <input type="text" id="productDesc" placeholder="Details, pack size" />
+                    </div>
+                    <div class="form-group" style="flex: 2;">
+                        <label for="productImage"><i class="fas fa-image"></i> Image URL</label>
+                        <input type="text" id="productImage" placeholder="https://example.com/image.jpg" />
+                    </div>
+                    <button class="btn-primary" id="saveProductBtn"><i class="fas fa-plus-circle"></i> Add</button>
+                </div>
+
+                <div class="product-grid" id="productGrid">
+                    <div class="empty-state" id="emptyState">
+                        <i class="fas fa-box-open"></i>
+                        <p>No products yet. Add your first item!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Orders (Admin) -->
+            <div class="tab-content" id="tab-orders">
+                <div class="stats-row">
+                    <div class="stat-box"><div class="num" id="totalOrders">0</div><div class="label">Total Orders</div></div>
+                    <div class="stat-box"><div class="num" id="pendingOrders">0</div><div class="label">Pending</div></div>
+                    <div class="stat-box"><div class="num" id="shippedOrders">0</div><div class="label">Shipped</div></div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem;">
+                    <button class="btn-primary" id="addOrderBtn" style="height: 44px; font-size: 0.9rem; padding: 0 1.5rem;">
+                        <i class="fas fa-plus"></i> New Order
+                    </button>
+                    <select id="filterOrders" style="padding: 0.5rem 1.2rem; border-radius: 60px; border: 1px solid #d6cdc2; background: white; font-size: 0.9rem;">
+                        <option value="all">All Orders</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <div class="orders-table-wrap">
+                    <table class="orders-table" id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Product</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersBody">
+                        </tbody>
+                    </table>
+                    <div class="empty-state" id="emptyOrders">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>No orders yet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Customers -->
+            <div class="tab-content" id="tab-customers">
+                <div class="stats-row">
+                    <div class="stat-box"><div class="num" id="totalCustomers">0</div><div class="label">Total Customers</div></div>
+                </div>
+                <div class="orders-table-wrap">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Customer Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Total Orders</th>
+                                <th>Total Spent</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersBody">
+                        </tbody>
+                    </table>
+                    <div class="empty-state" id="emptyCustomers">
+                        <i class="fas fa-users"></i>
+                        <p>No customers yet. Add orders to create customer accounts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Panel -->
+        <div id="customerPanel" style="display: none;">
+            <div class="customer-login" id="customerLogin">
+                <h3><i class="fas fa-sign-in-alt"></i> Customer Login</h3>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" id="customerPhone" placeholder="0300-1234567" style="padding: 0.7rem 1.2rem; border-radius: 60px; border: 1px solid #d6cdc2; width: 100%;" />
+                </div>
+                <button class="btn-primary" id="customerLoginBtn" style="width: 100%; justify-content: center;">View My Orders</button>
+            </div>
+
+            <div id="customerDashboard" style="display: none;">
+                <h3 style="margin-bottom: 1rem;"><i class="fas fa-user-circle"></i> Welcome, <span id="customerNameDisplay"></span></h3>
+                <div class="stats-row">
+                    <div class="stat-box"><div class="num" id="custTotalOrders">0</div><div class="label">My Orders</div></div>
+                    <div class="stat-box"><div class="num" id="custTotalSpent">0</div><div class="label">Total Spent</div></div>
+                </div>
+                <div id="customerOrdersList"></div>
+                <button class="btn-secondary" id="customerLogoutBtn" style="margin-top: 1rem; padding: 0.5rem 2rem; border: 1px solid #d6cdc2; border-radius: 60px; background: transparent; cursor: pointer;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
         </div>
     </div>
 
-    <div class="subhead">
-        <i class="fas fa-boxes" style="margin-right: 8px; color:#b45309;"></i>
-        Manage products & orders · <span id="productCount">0</span> products
-    </div>
+    <script>
+        (function() {
+            // ---------- STATE ----------
+            let products = [];
+            let orders = [];
+            let customers = [];
+            let editingId = null;
+            let currentCustomer = null;
 
-    <!-- Tabs -->
-    <div class="tabs">
-        <button class="tab-btn active" data-tab="products"><i class="fas fa-box"></i> Products</button>
-        <button class="tab-btn" data-tab="orders"><i class="fas fa-shopping-cart"></i> Orders</button>
-        <button class="tab-btn" data-tab="customers"><i class="fas fa-users"></i> Customers</button>
-    </div>
+            // DOM refs
+            const grid = document.getElementById('productGrid');
+            const emptyState = document.getElementById('emptyState');
+            const productCount = document.getElementById('productCount');
+            const nameInput = document.getElementById('productName');
+            const priceInput = document.getElementById('productPrice');
+            const descInput = document.getElementById('productDesc');
+            const imageInput = document.getElementById('productImage');
+            const saveBtn = document.getElementById('saveProductBtn');
+            const ordersBody = document.getElementById('ordersBody');
+            const emptyOrders = document.getElementById('emptyOrders');
+            const customersBody = document.getElementById('customersBody');
+            const emptyCustomers = document.getElementById('emptyCustomers');
+            const filterOrders = document.getElementById('filterOrders');
 
-    <!-- Tab: Products -->
-    <div class="tab-content active" id="tab-products">
-        <!-- Product Form -->
-        <div class="product-form">
-            <div class="form-group" style="flex: 1.5;">
-                <label for="productName"><i class="fas fa-tag"></i> Name</label>
-                <input type="text" id="productName" placeholder="Product name" />
-            </div>
-            <div class="form-group">
-                <label for="productPrice"><i class="fas fa-rupee-sign"></i> Price (Rs.)</label>
-                <input type="number" id="productPrice" placeholder="1250" step="1" />
-            </div>
-            <div class="form-group" style="flex: 2;">
-                <label for="productDesc"><i class="fas fa-align-left"></i> Description</label>
-                <input type="text" id="productDesc" placeholder="Details, pack size" />
-            </div>
-            <div class="form-group" style="flex: 2;">
-                <label for="productImage"><i class="fas fa-image"></i> Image URL</label>
-                <input type="text" id="productImage" placeholder="https://example.com/image.jpg" />
-            </div>
-            <button class="btn-primary" id="saveProductBtn"><i class="fas fa-plus-circle"></i> Add</button>
-        </div>
+            // Customer refs
+            const customerPhone = document.getElementById('customerPhone');
+            const customerLoginBtn = document.getElementById('customerLoginBtn');
+            const customerDashboard = document.getElementById('customerDashboard');
+            const customerLogin = document.getElementById('customerLogin');
+            const customerNameDisplay = document.getElementById('customerNameDisplay');
+            const customerOrdersList = document.getElementById('customerOrdersList');
+            const customerLogoutBtn = document.getElementById('customerLogoutBtn');
+            const custTotalOrders = document.getElementById('custTotalOrders');
+            const custTotalSpent = document.getElementById('custTotalSpent');
 
-        <!-- Product Grid -->
-        <div class="product-grid" id="productGrid">
-            <div class="empty-state" id="emptyState">
-                <i class="fas fa-box-open"></i>
-                <p>No products yet. Add your first item!</p>
-            </div>
-        </div>
-    </div>
+            // Admin/Customer switch
+            const adminBtn = document.getElementById('adminBtn');
+            const customerBtn = document.getElementById('customerBtn');
+            const adminPanel = document.getElementById('adminPanel');
+            const customerPanel = document.getElementById('customerPanel');
+            const pageTitle = document.getElementById('pageTitle');
 
-    <!-- Tab: Orders -->
-    <div class="tab-content" id="tab-orders">
-        <div class="stats-row">
-            <div class="stat-box"><div class="num" id="totalOrders">0</div><div class="label">Total Orders</div></div>
-            <div class="stat-box"><div class="num" id="pendingOrders">0</div><div class="label">Pending</div></div>
-            <div class="stat-box"><div class="num" id="shippedOrders">0</div><div class="label">Shipped</div></div>
-        </div>
-
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem;">
-            <button class="btn-primary" id="addOrderBtn" style="height: 44px; font-size: 0.9rem; padding: 0 1.5rem;">
-                <i class="fas fa-plus"></i> New Order
-            </button>
-            <select id="filterOrders" style="padding: 0.5rem 1.2rem; border-radius: 60px; border: 1px solid #d6cdc2; background: white; font-size: 0.9rem;">
-                <option value="all">All Orders</option>
-                <option value="pending">Pending</option>
-                <option value="processing">Processing</option>
-                <option value="shipped">Shipped</option>
-                <option value="delivered">Delivered</option>
-                <option value="cancelled">Cancelled</option>
-            </select>
-        </div>
-
-        <div class="orders-table-wrap">
-            <table class="orders-table" id="ordersTable">
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Product</th>
-                        <th>Qty</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="ordersBody">
-                </tbody>
-            </table>
-            <div class="empty-state" id="emptyOrders">
-                <i class="fas fa-shopping-cart"></i>
-                <p>No orders yet.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tab: Customers -->
-    <div class="tab-content" id="tab-customers">
-        <div class="stats-row">
-            <div class="stat-box"><div class="num" id="totalCustomers">0</div><div class="label">Total Customers</div></div>
-        </div>
-        <div class="orders-table-wrap">
-            <table class="orders-table">
-                <thead>
-                    <tr>
-                        <th>Customer Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Total Orders</th>
-                        <th>Total Spent</th>
-                    </tr>
-                </thead>
-                <tbody id="customersBody">
-                </tbody>
-            </table>
-            <div class="empty-state" id="emptyCustomers">
-                <i class="fas fa-users"></i>
-                <p>No customers yet. Add orders to create customer accounts.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    (function() {
-        // ---------- STATE ----------
-        let products = [];
-        let orders = [];
-        let customers = [];
-        let editingId = null;
-        let editingOrderId = null;
-
-        // DOM refs
-        const grid = document.getElementById('productGrid');
-        const emptyState = document.getElementById('emptyState');
-        const productCount = document.getElementById('productCount');
-        const nameInput = document.getElementById('productName');
-        const priceInput = document.getElementById('productPrice');
-        const descInput = document.getElementById('productDesc');
-        const imageInput = document.getElementById('productImage');
-        const saveBtn = document.getElementById('saveProductBtn');
-        const ordersBody = document.getElementById('ordersBody');
-        const emptyOrders = document.getElementById('emptyOrders');
-        const customersBody = document.getElementById('customersBody');
-        const emptyCustomers = document.getElementById('emptyCustomers');
-        const filterOrders = document.getElementById('filterOrders');
-
-        // ---------- HELPERS ----------
-        function generateId() {
-            return 'ORD' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase();
-        }
-
-        function generateCustomerId() {
-            return 'CUST' + Date.now().toString(36).substring(2, 6).toUpperCase();
-        }
-
-        function formatPrice(value) {
-            return Number(value).toFixed(0);
-        }
-
-        // ---------- TABS ----------
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-                document.getElementById('tab-' + this.dataset.tab).classList.add('active');
-                if (this.dataset.tab === 'orders') renderOrders();
-                if (this.dataset.tab === 'customers') renderCustomers();
-            });
-        });
-
-        // ---------- PRODUCT CRUD ----------
-        function renderProducts() {
-            const items = grid.querySelectorAll('.product-card');
-            items.forEach(el => el.remove());
-
-            if (products.length === 0) {
-                emptyState.style.display = 'block';
-                productCount.textContent = '0';
-                return;
+            // ---------- HELPERS ----------
+            function generateId() {
+                return 'ORD' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase();
             }
-            emptyState.style.display = 'none';
-            productCount.textContent = products.length;
 
-            const sorted = [...products].sort((a, b) => (a.id < b.id ? 1 : -1));
+            function generateCustomerId() {
+                return 'CUST' + Date.now().toString(36).substring(2, 6).toUpperCase();
+            }
 
-            sorted.forEach(product => {
-                const card = document.createElement('div');
-                card.className = 'product-card';
+            function formatPrice(value) {
+                return Number(value).toFixed(0);
+            }
 
-                if (product.image && product.image.trim() !== '') {
-                    const img = document.createElement('img');
-                    img.className = 'product-image';
-                    img.src = product.image;
-                    img.alt = product.name;
-                    img.onerror = function() {
-                        this.style.display = 'none';
-                        this.nextElementSibling.style.display = 'flex';
-                    };
-                    card.appendChild(img);
-                    const placeholder = document.createElement('div');
-                    placeholder.className = 'product-image-placeholder';
-                    placeholder.style.display = 'none';
-                    placeholder.innerHTML = '<i class="fas fa-image"></i><span>Image not found</span>';
-                    card.appendChild(placeholder);
+            // ---------- USER SWITCH ----------
+            adminBtn.addEventListener('click', function() {
+                adminBtn.classList.add('active');
+                customerBtn.classList.remove('active');
+                adminPanel.style.display = 'block';
+                customerPanel.style.display = 'none';
+                pageTitle.innerHTML =
+                    '<i class="fas fa-boxes" style="margin-right: 8px; color:#b45309;"></i> Admin Panel · Manage products & orders';
+            });
+
+            customerBtn.addEventListener('click', function() {
+                customerBtn.classList.add('active');
+                adminBtn.classList.remove('active');
+                adminPanel.style.display = 'none';
+                customerPanel.style.display = 'block';
+                pageTitle.innerHTML =
+                    '<i class="fas fa-user" style="margin-right: 8px; color:#b45309;"></i> Customer Dashboard · View your orders';
+                if (currentCustomer) {
+                    showCustomerDashboard(currentCustomer);
                 } else {
-                    const placeholder = document.createElement('div');
-                    placeholder.className = 'product-image-placeholder';
-                    placeholder.innerHTML = '<i class="fas fa-image"></i><span>No image</span>';
-                    card.appendChild(placeholder);
+                    customerLogin.style.display = 'block';
+                    customerDashboard.style.display = 'none';
+                }
+            });
+
+            // ---------- CUSTOMER LOGIN ----------
+            customerLoginBtn.addEventListener('click', function() {
+                const phone = customerPhone.value.trim();
+                if (!phone) {
+                    alert('Please enter your phone number.');
+                    return;
+                }
+                const customer = customers.find(c => c.phone === phone);
+                if (!customer) {
+                    alert('No account found with this phone number. Please contact admin.');
+                    return;
+                }
+                currentCustomer = customer;
+                showCustomerDashboard(customer);
+            });
+
+            customerPhone.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    customerLoginBtn.click();
+                }
+            });
+
+            function showCustomerDashboard(customer) {
+                customerLogin.style.display = 'none';
+                customerDashboard.style.display = 'block';
+                customerNameDisplay.textContent = customer.name;
+
+                const custOrders = orders.filter(o => o.customerId === customer.id);
+                const totalSpent = custOrders.reduce((sum, o) => sum + o.total, 0);
+                custTotalOrders.textContent = custOrders.length;
+                custTotalSpent.textContent = 'Rs. ' + formatPrice(totalSpent);
+
+                customerOrdersList.innerHTML = '';
+                if (custOrders.length === 0) {
+                    customerOrdersList.innerHTML =
+                        '<div class="empty-state"><i class="fas fa-box-open"></i><p>You have no orders yet.</p></div>';
+                    return;
                 }
 
-                const nameDiv = document.createElement('div');
-                nameDiv.className = 'product-name';
-                nameDiv.innerHTML = `<i class="fas fa-cube"></i> ${escapeHtml(product.name)}`;
+                custOrders.sort((a, b) => (a.id < b.id ? 1 : -1)).forEach(order => {
+                    const div = document.createElement('div');
+                    div.className = 'customer-order-card';
+                    const statusClass = 'status-' + order.status;
+                    div.innerHTML = `
+                        <div class="order-info">
+                            <span><strong>Order:</strong> ${order.id}</span>
+                            <span><strong>Product:</strong> ${escapeHtml(order.productName)}</span>
+                            <span><strong>Qty:</strong> ${order.quantity}</span>
+                            <span><strong>Total:</strong> Rs. ${formatPrice(order.total)}</span>
+                        </div>
+                        <span class="status-badge ${statusClass}">${order.status.toUpperCase()}</span>
+                    `;
+                    customerOrdersList.appendChild(div);
+                });
+            }
 
-                const priceDiv = document.createElement('div');
-                priceDiv.className = 'product-price';
-                priceDiv.innerHTML = `Rs. ${formatPrice(product.price)} <small>PKR</small>`;
+            customerLogoutBtn.addEventListener('click', function() {
+                currentCustomer = null;
+                customerLogin.style.display = 'block';
+                customerDashboard.style.display = 'none';
+                customerPhone.value = '';
+            });
 
-                const descDiv = document.createElement('div');
-                descDiv.className = 'product-desc';
-                descDiv.textContent = product.description || '—';
+            // ---------- TABS ----------
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+                    document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+                    if (this.dataset.tab === 'orders') renderOrders();
+                    if (this.dataset.tab === 'customers') renderCustomers();
+                });
+            });
 
-                const actions = document.createElement('div');
-                actions.className = 'card-actions';
+            // ---------- PRODUCT CRUD ----------
+            function renderProducts() {
+                const items = grid.querySelectorAll('.product-card');
+                items.forEach(el => el.remove());
 
-                // Add to Order button
-                const orderBtn = document.createElement('button');
-                orderBtn.className = 'add-order-btn';
-                orderBtn.innerHTML = '<i class="fas fa-cart-plus"></i> Order';
-                orderBtn.addEventListener('click', () => {
-                    createOrderFromProduct(product);
+                if (products.length === 0) {
+                    emptyState.style.display = 'block';
+                    productCount.textContent = '0';
+                    return;
+                }
+                emptyState.style.display = 'none';
+                productCount.textContent = products.length;
+
+                const sorted = [...products].sort((a, b) => (a.id < b.id ? 1 : -1));
+
+                sorted.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+
+                    if (product.image && product.image.trim() !== '') {
+                        const img = document.createElement('img');
+                        img.className = 'product-image';
+                        img.src = product.image;
+                        img.alt = product.name;
+                        img.onerror = function() {
+                            this.style.display = 'none';
+                            this.nextElementSibling.style.display = 'flex';
+                        };
+                        card.appendChild(img);
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'product-image-placeholder';
+                        placeholder.style.display = 'none';
+                        placeholder.innerHTML = '<i class="fas fa-image"></i><span>Image not found</span>';
+                        card.appendChild(placeholder);
+                    } else {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'product-image-placeholder';
+                        placeholder.innerHTML = '<i class="fas fa-image"></i><span>No image</span>';
+                        card.appendChild(placeholder);
+                    }
+
+                    const nameDiv = document.createElement('div');
+                    nameDiv.className = 'product-name';
+                    nameDiv.innerHTML = `<i class="fas fa-cube"></i> ${escapeHtml(product.name)}`;
+
+                    const priceDiv = document.createElement('div');
+                    priceDiv.className = 'product-price';
+                    priceDiv.innerHTML = `Rs. ${formatPrice(product.price)} <small>PKR</small>`;
+
+                    const descDiv = document.createElement('div');
+                    descDiv.className = 'product-desc';
+                    descDiv.textContent = product.description || '—';
+
+                    const actions = document.createElement('div');
+                    actions.className = 'card-actions';
+
+                    const orderBtn = document.createElement('button');
+                    orderBtn.className = 'add-order-btn';
+                    orderBtn.innerHTML = '<i class="fas fa-cart-plus"></i> Order';
+                    orderBtn.addEventListener('click', () => {
+                        createOrderFromProduct(product);
+                    });
+
+                    const editBtn = document.createElement('button');
+                    editBtn.className = 'btn-edit';
+                    editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+                    editBtn.addEventListener('click', () => startEdit(product.id));
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'btn-danger';
+                    deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                    deleteBtn.addEventListener('click', () => deleteProduct(product.id));
+
+                    actions.appendChild(orderBtn);
+                    actions.appendChild(editBtn);
+                    actions.appendChild(deleteBtn);
+
+                    card.appendChild(nameDiv);
+                    card.appendChild(priceDiv);
+                    card.appendChild(descDiv);
+                    card.appendChild(actions);
+                    grid.appendChild(card);
+                });
+            }
+
+            function escapeHtml(text) {
+                if (!text) return '';
+                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+                return text.replace(/[&<>"']/g, m => map[m]);
+            }
+
+            function addProduct(name, price, description, image) {
+                products.push({ id: generateId(), name: name.trim(), price: parseFloat(price), description: description
+                        .trim() || '', image: image.trim() || '' });
+                renderProducts();
+                clearForm();
+            }
+
+            function updateProduct(id, name, price, description, image) {
+                const index = products.findIndex(p => p.id === id);
+                if (index === -1) return false;
+                products[index] = { ...products[index], name: name.trim(), price: parseFloat(price), description: description
+                        .trim() || '', image: image.trim() || '' };
+                renderProducts();
+                clearForm();
+                editingId = null;
+                saveBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Add';
+                return true;
+            }
+
+            function deleteProduct(id) {
+                if (!confirm('Remove this product?')) return;
+                products = products.filter(p => p.id !== id);
+                if (editingId === id) { editingId = null;
+                    saveBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Add';
+                    clearForm(); }
+                renderProducts();
+            }
+
+            function startEdit(id) {
+                const product = products.find(p => p.id === id);
+                if (!product) return;
+                editingId = id;
+                nameInput.value = product.name;
+                priceInput.value = product.price;
+                descInput.value = product.description || '';
+                imageInput.value = product.image || '';
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> Update';
+                nameInput.focus();
+            }
+
+            function clearForm() {
+                nameInput.value = '';
+                priceInput.value = '';
+                descInput.value = '';
+                imageInput.value = '';
+                editingId = null;
+                saveBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Add';
+            }
+
+            function handleFormSubmit(e) {
+                e.preventDefault();
+                const name = nameInput.value.trim();
+                const price = priceInput.value.trim();
+                const description = descInput.value.trim();
+                const image = imageInput.value.trim();
+                if (!name) { alert('Enter product name.');
+                    nameInput.focus(); return; }
+                if (!price || isNaN(parseFloat(price)) || parseFloat(price) < 0) { alert('Enter valid price.');
+                    priceInput.focus(); return; }
+                if (editingId) updateProduct(editingId, name, parseFloat(price), description, image);
+                else addProduct(name, parseFloat(price), description, image);
+            }
+
+            // ---------- ORDER MANAGEMENT ----------
+            function createOrderFromProduct(product) {
+                const customerName = prompt('Enter customer name:', 'John Doe');
+                if (!customerName) return;
+                const customerPhone = prompt('Enter customer phone:', '0300-1234567');
+                if (customerPhone === null) return;
+                const qty = parseInt(prompt('Enter quantity:', '1')) || 1;
+
+                let customer = customers.find(c => c.phone === customerPhone || (c.name.toLowerCase() === customerName
+                .toLowerCase()));
+                if (!customer) {
+                    customer = { id: generateCustomerId(), name: customerName, phone: customerPhone, email: '', orders: [] };
+                    customers.push(customer);
+                }
+
+                const order = {
+                    id: generateId(),
+                    customerId: customer.id,
+                    customerName: customerName,
+                    phone: customerPhone,
+                    productId: product.id,
+                    productName: product.name,
+                    quantity: qty,
+                    price: product.price,
+                    total: product.price * qty,
+                    status: 'pending',
+                    date: new Date().toLocaleDateString('en-PK'),
+                    orderItems: [{ productId: product.id, productName: product.name, quantity: qty, price: product.price }]
+                };
+                orders.push(order);
+                customer.orders.push(order.id);
+                renderOrders();
+                renderCustomers();
+                alert('Order created successfully! Order ID: ' + order.id);
+                document.querySelector('[data-tab="orders"]').click();
+            }
+
+            function renderOrders() {
+                const filter = filterOrders.value;
+                let filtered = orders;
+                if (filter !== 'all') filtered = orders.filter(o => o.status === filter);
+
+                ordersBody.innerHTML = '';
+                if (filtered.length === 0) {
+                    emptyOrders.style.display = 'block';
+                    document.getElementById('totalOrders').textContent = orders.length;
+                    document.getElementById('pendingOrders').textContent = orders.filter(o => o.status === 'pending' || o
+                        .status === 'processing').length;
+                    document.getElementById('shippedOrders').textContent = orders.filter(o => o.status === 'shipped' || o
+                        .status === 'delivered').length;
+                    return;
+                }
+                emptyOrders.style.display = 'none';
+
+                document.getElementById('totalOrders').textContent = orders.length;
+                document.getElementById('pendingOrders').textContent = orders.filter(o => o.status === 'pending' || o
+                    .status === 'processing').length;
+                document.getElementById('shippedOrders').textContent = orders.filter(o => o.status === 'shipped' || o
+                    .status === 'delivered').length;
+
+                filtered.sort((a, b) => (a.id < b.id ? 1 : -1)).forEach(order => {
+                    const tr = document.createElement('tr');
+                    const statusClass = 'status-' + order.status;
+                    tr.innerHTML = `
+                        <td><strong>${order.id}</strong></td>
+                        <td>${escapeHtml(order.customerName)}</td>
+                        <td>${escapeHtml(order.productName)}</td>
+                        <td>${order.quantity}</td>
+                        <td>Rs. ${formatPrice(order.total)}</td>
+                        <td><span class="status-badge ${statusClass}">${order.status.toUpperCase()}</span></td>
+                        <td>
+                            <button class="btn-edit" onclick="window.updateOrderStatus('${order.id}','processing')" style="font-size:0.7rem;padding:0.2rem 0.6rem;">Process</button>
+                            <button class="btn-success" onclick="window.updateOrderStatus('${order.id}','shipped')" style="font-size:0.7rem;padding:0.2rem 0.6rem;">Ship</button>
+                            <button class="btn-danger" onclick="window.updateOrderStatus('${order.id}','cancelled')" style="font-size:0.7rem;padding:0.2rem 0.6rem;">Cancel</button>
+                        </td>
+                    `;
+                    ordersBody.appendChild(tr);
+                });
+            }
+
+            window.updateOrderStatus = function(orderId, status) {
+                const order = orders.find(o => o.id === orderId);
+                if (!order) return;
+                if (status === 'cancelled' && !confirm('Cancel this order?')) return;
+                order.status = status;
+                renderOrders();
+                renderCustomers();
+                // If customer is logged in, refresh their dashboard
+                if (currentCustomer) {
+                    showCustomerDashboard(currentCustomer);
+                }
+            };
+
+            document.getElementById('addOrderBtn').addEventListener('click', function() {
+                const productName = prompt('Enter product name:');
+                if (!productName) return;
+                const price = parseFloat(prompt('Enter price (Rs.):'));
+                if (isNaN(price) || price < 0) return;
+                const qty = parseInt(prompt('Enter quantity:')) || 1;
+                const customerName = prompt('Enter customer name:');
+                if (!customerName) return;
+                const phone = prompt('Enter phone:');
+                if (phone === null) return;
+
+                let customer = customers.find(c => c.phone === phone);
+                if (!customer) {
+                    customer = { id: generateCustomerId(), name: customerName, phone: phone, email: '', orders: [] };
+                    customers.push(customer);
+                }
+
+                const product = { id: generateId(), name: productName, price: price, description: '', image: '' };
+                products.push(product);
+
+                const order = {
+                    id: generateId(),
+                    customerId: customer.id,
+                    customerName: customerName,
+                    phone: phone,
+                    productId: product.id,
+                    productName: productName,
+                    quantity: qty,
+                    price: price,
+                    total: price * qty,
+                    status: 'pending',
+                    date: new Date().toLocaleDateString('en-PK'),
+                    orderItems: [{ productId: product.id, productName: productName, quantity: qty, price: price }]
+                };
+                orders.push(order);
+                customer.orders.push(order.id);
+                renderProducts();
+                renderOrders();
+                renderCustomers();
+                alert('Order created! ID: ' + order.id);
+            });
+
+            filterOrders.addEventListener('change', renderOrders);
+
+            // ---------- CUSTOMERS ----------
+            function renderCustomers() {
+                customersBody.innerHTML = '';
+                if (customers.length === 0) { emptyCustomers.style.display = 'block';
+                    document.getElementById('totalCustomers').textContent = '0'; return; }
+                emptyCustomers.style.display = 'none';
+                document.getElementById('totalCustomers').textContent = customers.length;
+
+                customers.sort((a, b) => a.name.localeCompare(b.name)).forEach(cust => {
+                    const custOrders = orders.filter(o => o.customerId === cust.id);
+                    const totalSpent = custOrders.reduce((sum, o) => sum + o.total, 0);
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${escapeHtml(cust.name)}</strong></td>
+                        <td>${escapeHtml(cust.email || '—')}</td>
+                        <td>${escapeHtml(cust.phone || '—')}</td>
+                        <td>${custOrders.length}</td>
+                        <td>Rs. ${formatPrice(totalSpent)}</td>
+                    `;
+                    customersBody.appendChild(tr);
+                });
+            }
+
+            // ---------- SAMPLE DATA ----------
+            function initSampleData() {
+                const sampleProducts = [
+                    { name: 'Premium Dates (5kg)', price: 4500, description: 'Medjool dates, bulk pack',
+                    image: 'https://images.unsplash.com/photo-1582727657635-c771002bdada?w=400&h=300&fit=crop' },
+                    { name: 'Almonds (1kg x 12)', price: 2850, description: 'California almonds, wholesale carton',
+                        image: 'https://images.unsplash.com/photo-1518080780120-0b0c9b88c319?w=400&h=300&fit=crop' },
+                    { name: 'Organic Honey (500ml)', price: 1875,
+                        description: 'Pure acacia honey, case of 24',
+                        image: 'https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=400&h=300&fit=crop' },
+                    { name: 'Spice Mix Set', price: 3200, description: '6 aromatic spices, restaurant grade',
+                        image: 'https://images.unsplash.com/photo-1532335696415-5d2b5b4b7f78?w=400&h=300&fit=crop' },
+                ];
+                sampleProducts.forEach(item => {
+                    products.push({ id: generateId(), ...item });
                 });
 
-                const editBtn = document.createElement('button');
-                editBtn.className = 'btn-edit';
-                editBtn.innerHTML = '<i class="fas fa-edit"></i>';
-                editBtn.addEventListener('click', () => startEdit(product.id));
+                const sampleCustomers = [
+                    { id: generateCustomerId(), name: 'Ahmed Khan', phone: '0300-1234567',
+                    email: 'ahmed@email.com', orders: [] },
+                    { id: generateCustomerId(), name: 'Fatima Ali', phone: '0311-9876543',
+                    email: 'fatima@email.com', orders: [] },
+                    { id: generateCustomerId(), name: 'Muhammad Usman', phone: '0322-5555555',
+                        email: 'usman@email.com', orders: [] },
+                ];
+                customers = sampleCustomers;
 
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'btn-danger';
-                deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-                deleteBtn.addEventListener('click', () => deleteProduct(product.id));
+                const sampleOrders = [
+                    { id: generateId(), customerId: customers[0].id, customerName: 'Ahmed Khan',
+                        phone: '0300-1234567', productId: products[0].id, productName: 'Premium Dates (5kg)',
+                        quantity: 2, price: 4500, total: 9000, status: 'pending', date: '2026-06-20',
+                    orderItems: [] },
+                    { id: generateId(), customerId: customers[1].id, customerName: 'Fatima Ali',
+                        phone: '0311-9876543', productId: products[1].id,
+                        productName: 'Almonds (1kg x 12)', quantity: 1, price: 2850, total: 2850,
+                        status: 'shipped', date: '2026-06-21', orderItems: [] },
+                    { id: generateId(), customerId: customers[2].id, customerName: 'Muhammad Usman',
+                        phone: '0322-5555555', productId: products[2].id,
+                        productName: 'Organic Honey (500ml)', quantity: 3, price: 1875, total: 5625,
+                        status: 'delivered', date: '2026-06-19', orderItems: [] },
+                ];
+                sampleOrders.forEach(order => {
+                    orders.push(order);
+                    const cust = customers.find(c => c.id === order.customerId);
+                    if (cust) cust.orders.push(order.id);
+                });
 
-                actions.appendChild(orderBtn);
-                actions.appendChild(editBtn);
-                actions.appendChild(deleteBtn);
-
-                card.appendChild(nameDiv);
-                card.appendChild(priceDiv);
-                card.appendChild(descDiv);
-                card.appendChild(actions);
-                grid.appendChild(card);
-            });
-        }
-
-        function escapeHtml(text) {
-            if (!text) return '';
-            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-            return text.replace(/[&<>"']/g, m => map[m]);
-        }
-
-        function addProduct(name, price, description, image) {
-            products.push({ id: generateId(), name: name.trim(), price: parseFloat(price), description: description.trim() || '', image: image.trim() || '' });
-            renderProducts();
-            clearForm();
-        }
-
-        function updateProduct(id, name, price, description, image) {
-            const index = products.findIndex(p => p.id === id);
-            if (index === -1) return false;
-            products[index] = { ...products[index], name: name.trim(), price: parseFloat(price), description: description.trim() || '', image: image.trim() || '' };
-            renderProducts();
-            clearForm();
-            editingId = null;
-            saveBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Add';
-            return true;
-        }
-
-        function deleteProduct(id) {
-            if (!confirm('Remove this product?')) return;
-            products = products.filter(p => p.id !== id);
-            if (editingId === id) { editingId = null; saveBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Add'; clearForm(); }
-            renderProducts();
-        }
-
-        function startEdit(id) {
-            const product = products.find(p => p.id === id);
-            if (!product) return;
-            editingId = id;
-            nameInput.value = product.name;
-            priceInput.value = product.price;
-            descInput.value = product.description || '';
-            imageInput.value = product.image || '';
-            saveBtn.innerHTML = '<i class="fas fa-save"></i> Update';
-            nameInput.focus();
-        }
-
-        function clearForm() {
-            nameInput.value = '';
-            priceInput.value = '';
-            descInput.value = '';
-            imageInput.value = '';
-            editingId = null;
-            saveBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Add';
-        }
-
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const name = nameInput.value.trim();
-            const price = priceInput.value.trim();
-            const description = descInput.value.trim();
-            const image = imageInput.value.trim();
-            if (!name) { alert('Enter product name.'); nameInput.focus(); return; }
-            if (!price || isNaN(parseFloat(price)) || parseFloat(price) < 0) { alert('Enter valid price.'); priceInput.focus(); return; }
-            if (editingId) updateProduct(editingId, name, parseFloat(price), description, image);
-            else addProduct(name, parseFloat(price), description, image);
-        }
-
-        // ---------- ORDER MANAGEMENT ----------
-        function createOrderFromProduct(product) {
-            const customerName = prompt('Enter customer name:', 'John Doe');
-            if (!customerName) return;
-            const customerPhone = prompt('Enter customer phone:', '0300-1234567');
-            if (customerPhone === null) return;
-            const qty = parseInt(prompt('Enter quantity:', '1')) || 1;
-
-            let customer = customers.find(c => c.phone === customerPhone || (c.name.toLowerCase() === customerName.toLowerCase()));
-            if (!customer) {
-                customer = { id: generateCustomerId(), name: customerName, phone: customerPhone, email: '', orders: [] };
-                customers.push(customer);
+                renderProducts();
+                renderOrders();
+                renderCustomers();
             }
 
-            const order = {
-                id: generateId(),
-                customerId: customer.id,
-                customerName: customerName,
-                phone: customerPhone,
-                productId: product.id,
-                productName: product.name,
-                quantity: qty,
-                price: product.price,
-                total: product.price * qty,
-                status: 'pending',
-                date: new Date().toLocaleDateString('en-PK'),
-                orderItems: [{ productId: product.id, productName: product.name, quantity: qty, price: product.price }]
-            };
-            orders.push(order);
-            customer.orders.push(order.id);
-            renderOrders();
-            renderCustomers();
-            alert('Order created successfully! Order ID: ' + order.id);
-            // Switch to orders tab
-            document.querySelector('[data-tab="orders"]').click();
-        }
-
-        function renderOrders() {
-            const filter = filterOrders.value;
-            let filtered = orders;
-            if (filter !== 'all') filtered = orders.filter(o => o.status === filter);
-
-            ordersBody.innerHTML = '';
-            if (filtered.length === 0) {
-                emptyOrders.style.display = 'block';
-                document.getElementById('totalOrders').textContent = orders.length;
-                document.getElementById('pendingOrders').textContent = orders.filter(o => o.status === 'pending' || o.status === 'processing').length;
-                document.getElementById('shippedOrders').textContent = orders.filter(o => o.status === 'shipped' || o.status === 'delivered').length;
-                return;
-            }
-            emptyOrders.style.display = 'none';
-
-            document.getElementById('totalOrders').textContent = orders.length;
-            document.getElementById('pendingOrders').textContent = orders.filter(o => o.status === 'pending' || o.status === 'processing').length;
-            document.getElementById('shippedOrders').textContent = orders.filter(o => o.status === 'shipped' || o.status === 'delivered').length;
-
-            filtered.sort((a, b) => (a.id < b.id ? 1 : -1)).forEach(order => {
-                const tr = document.createElement('tr');
-                const statusClass = 'status-' + order.status;
-                tr.innerHTML = `
-                    <td><strong>${order.id}</strong></td>
-                    <td>${escapeHtml(order.customerName)}</td>
-                    <td>${escapeHtml(order.productName)}</td>
-                    <td>${order.quantity}</td>
-                    <td>Rs. ${formatPrice(order.total)}</td>
-                    <td><span class="status-badge ${statusClass}">${order.status.toUpperCase()}</span></td>
-                    <td>
-                        <button class="btn-edit" onclick="window.updateOrderStatus('${order.id}','processing')" style="font-size:0.7rem;padding:0.2rem 0.6rem;">Process</button>
-                        <button class="btn-success" onclick="window.updateOrderStatus('${order.id}','shipped')" style="font-size:0.7rem;padding:0.2rem 0.6rem;">Ship</button>
-                        <button class="btn-danger" onclick="window.updateOrderStatus('${order.id}','cancelled')" style="font-size:0.7rem;padding:0.2rem 0.6rem;">Cancel</button>
-                    </td>
-                `;
-                ordersBody.appendChild(tr);
-            });
-        }
-
-        window.updateOrderStatus = function(orderId, status) {
-            const order = orders.find(o => o.id === orderId);
-            if (!order) return;
-            if (status === 'cancelled' && !confirm('Cancel this order?')) return;
-            order.status = status;
-            renderOrders();
-            renderCustomers();
-        };
-
-        // Add manual order
-        document.getElementById('addOrderBtn').addEventListener('click', function() {
-            const productName = prompt('Enter product name:');
-            if (!productName) return;
-            const price = parseFloat(prompt('Enter price (Rs.):'));
-            if (isNaN(price) || price < 0) return;
-            const qty = parseInt(prompt('Enter quantity:')) || 1;
-            const customerName = prompt('Enter customer name:');
-            if (!customerName) return;
-            const phone = prompt('Enter phone:');
-            if (phone === null) return;
-
-            let customer = customers.find(c => c.phone === phone);
-            if (!customer) {
-                customer = { id: generateCustomerId(), name: customerName, phone: phone, email: '', orders: [] };
-                customers.push(customer);
-            }
-
-            const product = { id: generateId(), name: productName, price: price, description: '', image: '' };
-            products.push(product);
-
-            const order = {
-                id: generateId(),
-                customerId: customer.id,
-                customerName: customerName,
-                phone: phone,
-                productId: product.id,
-                productName: productName,
-                quantity: qty,
-                price: price,
-                total: price * qty,
-                status: 'pending',
-                date: new Date().toLocaleDateString('en-PK'),
-                orderItems: [{ productId: product.id, productName: productName, quantity: qty, price: price }]
-            };
-            orders.push(order);
-            customer.orders.push(order.id);
-            renderProducts();
-            renderOrders();
-            renderCustomers();
-            alert('Order created! ID: ' + order.id);
-        });
-
-        // Filter orders
-        filterOrders.addEventListener('change', renderOrders);
-
-        // ---------- CUSTOMERS ----------
-        function renderCustomers() {
-            customersBody.innerHTML = '';
-            if (customers.length === 0) { emptyCustomers.style.display = 'block'; document.getElementById('totalCustomers').textContent = '0'; return; }
-            emptyCustomers.style.display = 'none';
-            document.getElementById('totalCustomers').textContent = customers.length;
-
-            customers.sort((a, b) => a.name.localeCompare(b.name)).forEach(cust => {
-                const custOrders = orders.filter(o => o.customerId === cust.id);
-                const totalSpent = custOrders.reduce((sum, o) => sum + o.total, 0);
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${escapeHtml(cust.name)}</strong></td>
-                    <td>${escapeHtml(cust.email || '—')}</td>
-                    <td>${escapeHtml(cust.phone || '—')}</td>
-                    <td>${custOrders.length}</td>
-                    <td>Rs. ${formatPrice(totalSpent)}</td>
-                `;
-                customersBody.appendChild(tr);
-            });
-        }
-
-        // ---------- SAMPLE DATA ----------
-        function initSampleData() {
-            // Products
-            const sampleProducts = [
-                { name: 'Premium Dates (5kg)', price: 4500, description: 'Medjool dates, bulk pack', image: 'https://images.unsplash.com/photo-1582727657635-c771002bdada?w=400&h=300&fit=crop' },
-                { name: 'Almonds (1kg x 12)', price: 2850, description: 'California almonds, wholesale carton', image: 'https://images.unsplash.com/photo-1518080780120-0b0c9b88c319?w=400&h=300&fit=crop' },
-                { name: 'Organic Honey (500ml)', price: 1875, description: 'Pure acacia honey, case of 24', image: 'https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=400&h=300&fit=crop' },
-                { name: 'Spice Mix Set', price: 3200, description: '6 aromatic spices, restaurant grade', image: 'https://images.unsplash.com/photo-1532335696415-5d2b5b4b7f78?w=400&h=300&fit=crop' },
-            ];
-            sampleProducts.forEach(item => {
-                products.push({ id: generateId(), ...item });
+            // ---------- EVENTS ----------
+            saveBtn.addEventListener('click', handleFormSubmit);
+            document.querySelectorAll('#productName, #productPrice, #productDesc, #productImage').forEach(input => {
+                input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault();
+                        handleFormSubmit(e); } });
             });
 
-            // Customers
-            const sampleCustomers = [
-                { id: generateCustomerId(), name: 'Ahmed Khan', phone: '0300-1234567', email: 'ahmed@email.com', orders: [] },
-                { id: generateCustomerId(), name: 'Fatima Ali', phone: '0311-9876543', email: 'fatima@email.com', orders: [] },
-                { id: generateCustomerId(), name: 'Muhammad Usman', phone: '0322-5555555', email: 'usman@email.com', orders: [] },
-            ];
-            customers = sampleCustomers;
-
-            // Orders
-            const sampleOrders = [
-                { id: generateId(), customerId: customers[0].id, customerName: 'Ahmed Khan', phone: '0300-1234567', productId: products[0].id, productName: 'Premium Dates (5kg)', quantity: 2, price: 4500, total: 9000, status: 'pending', date: '2026-06-20', orderItems: [] },
-                { id: generateId(), customerId: customers[1].id, customerName: 'Fatima Ali', phone: '0311-9876543', productId: products[1].id, productName: 'Almonds (1kg x 12)', quantity: 1, price: 2850, total: 2850, status: 'shipped', date: '2026-06-21', orderItems: [] },
-                { id: generateId(), customerId: customers[2].id, customerName: 'Muhammad Usman', phone: '0322-5555555', productId: products[2].id, productName: 'Organic Honey (500ml)', quantity: 3, price: 1875, total: 5625, status: 'delivered', date: '2026-06-19', orderItems: [] },
-            ];
-            sampleOrders.forEach(order => {
-                orders.push(order);
-                const cust = customers.find(c => c.id === order.customerId);
-                if (cust) cust.orders.push(order.id);
+            document.querySelector('.brand-title h1').addEventListener('dblclick', function() {
+                if (editingId && confirm('Cancel editing?')) { clearForm();
+                    renderProducts(); } else clearForm();
             });
 
-            renderProducts();
-            renderOrders();
-            renderCustomers();
-        }
-
-        // ---------- EVENTS ----------
-        saveBtn.addEventListener('click', handleFormSubmit);
-        document.querySelectorAll('#productName, #productPrice, #productDesc, #productImage').forEach(input => {
-            input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); handleFormSubmit(e); } });
-        });
-
-        // Reset form on double-click brand title
-        document.querySelector('.brand-title h1').addEventListener('dblclick', function() {
-            if (editingId && confirm('Cancel editing?')) { clearForm(); renderProducts(); }
-            else clearForm();
-        });
-
-        // Init
-        initSampleData();
-        window.__products = products;
-        window.__orders = orders;
-        window.__customers = customers;
-    })();
-</script>
+            // Init
+            initSampleData();
+            window.__products = products;
+            window.__orders = orders;
+            window.__customers = customers;
+        })();
+    </script>
 </body>
 </html>
